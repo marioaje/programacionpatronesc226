@@ -1,5 +1,7 @@
 package org.example;
 
+import configuracion.Conexion;
+import controllers.clientesController;
 import interfaces.CursoOperaciones;
 import models.CursoModels;
 
@@ -8,11 +10,15 @@ import models.CursoModels;
 public class Main {
     public static void main(String[] args) {
 
-        CursoOperaciones objetoCurso = new CursoModels(1, "Patrones de Programacion","Activo");
 
-        objetoCurso.matricularEstudiante("Profe Mario");
-        objetoCurso.mostrarInformacion();
-        objetoCurso.cancelarCurso();
+
+
+
+//        CursoOperaciones objetoCurso = new CursoModels(1, "Patrones de Programacion","Activo");
+//
+//        objetoCurso.matricularEstudiante("Profe Mario");
+//        objetoCurso.mostrarInformacion();
+//        objetoCurso.cancelarCurso();
 
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
         // to see how IntelliJ IDEA suggests fixing it.
