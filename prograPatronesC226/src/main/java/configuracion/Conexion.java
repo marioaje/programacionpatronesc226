@@ -6,25 +6,56 @@ import java.sql.SQLException;
 
 public class Conexion {
 
+    // Instancia única (Singleton)
     private static Conexion instancia;
+
+    // Objeto Connection
     private Connection conexion;
 
-    private final String URL = "jdbc:mysql://srv1165.hstgr.io:3306/u484426513_patronesc226";
+    // Datos de conexión
+    private static final String URL =
+            "jdbc:mysql://srv1165.hstgr.io:3306/u484426513_patronesc226";
 
-    private final String USER = "u484426513_patronesc226";
+    private static final String USER =
+            "u484426513_patronesc226";
 
-    private final String PASSWORD = "gM$QEi04";
+    private static final String PASSWORD =
+            "gM$QEi04";
 
-    //Constructor privado
+    // Constructor privado
     private Conexion() {
+        conectar();
+    }
+
+    // Crear conexión
+    private void conectar() {
+
         try {
-            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            // Cargar el Driver de MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            conexion = DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASSWORD
+            );
+
+            System.out.println("Conexión establecida correctamente.");
+
+        } catch (ClassNotFoundException e) {
+
+            System.out.println("No se encontró el Driver MySQL.");
+
         } catch (SQLException e) {
-            System.out.println("Error al conectar: " + e.getMessage());
+
+            System.out.println("Error de conexión: " + e.getMessage());
         }
     }
 
+    // Obtener la única instancia (Singleton)
     public static Conexion getInstancia() {
+
         if (instancia == null) {
             instancia = new Conexion();
         }
@@ -32,34 +63,58 @@ public class Conexion {
         return instancia;
     }
 
-    public Connection getConexion() {
+    // Obtener la conexión
+    public Connection getConnection() {
+
+        try {
+
+            // Si la conexión se perdió, volver a conectarse
+            if (conexion == null || conexion.isClosed()) {
+
+                System.out.println("Reconectando a la base de datos...");
+
+                conectar();
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(e.getMessage());
+        }
+
         return conexion;
     }
 
-    public void cerrarConexion() {
-        try {
-            if ( conexion != null  && !conexion.isClosed()) {
-                conexion.close();
-
-                System.out.println("Conexion cerrada");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al conectar: " + e.getMessage());
-        }
-    }
-
+    // Verificar si existe conexión
     public boolean estaConectado() {
+
         try {
-            return conexion != null && !conexion.isClosed();
+
+            return conexion != null &&
+                    !conexion.isClosed();
 
         } catch (SQLException e) {
+
             return false;
         }
     }
 
-    //De aca para abajo va el singleton
+    // Cerrar conexión
+    public void cerrarConexion() {
 
-//    srv1165.hstgr.io
-//            u484426513_patronesc226
-//    gM$QEi04
+        try {
+
+            if (conexion != null &&
+                    !conexion.isClosed()) {
+
+                conexion.close();
+
+                System.out.println("Conexión cerrada correctamente.");
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("Error al cerrar la conexión: " + e.getMessage());
+        }
+    }
+
 }

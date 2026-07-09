@@ -10,6 +10,6 @@ public class clientesDAO {
     private Connection conexion;
 
     public clientesDAO() {
-        conexion = Conexion.getInstancia().getConexion();
+        //conexion = Conexion.getInstancia().getConexion();
     }
 }
